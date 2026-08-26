@@ -53,7 +53,7 @@ textarea{width:100%;min-height:115px;border:1px solid var(--line);border-radius:
       <div style="display:none" id="metaStore">
         <input id="patientId"><input id="interviewer"><input id="referrer"><input id="visitDate">
       </div>
-    <div><h1>Intervista clinica ADHD adulto</h1><div class="muted">Central Pilot v2.1 · <span id="centralStatus">connessione…</span> · <form method="post" action="/logout" style="display:inline"><button type="submit" style="border:0;background:none;color:#6b7280;padding:0;text-decoration:underline">Esci</button></form></div></div>
+    <div><h1>Intervista clinica ADHD adulto</h1><div class="muted">Central Pilot v2.1.2 · <span id="centralStatus">connessione…</span> · <form method="post" action="/logout" style="display:inline"><button type="submit" style="border:0;background:none;color:#6b7280;padding:0;text-decoration:underline">Esci</button></form></div></div>
     <div class="progress"><div class="muted" id="progTxt"></div><div class="track"><div class="fill" id="progFill"></div></div><div class="muted" id="elapsedTxt" style="margin-top:5px;text-align:right"></div></div>
   </div>
 
@@ -299,7 +299,15 @@ async function centralLoad(id){const r=await fetch("/api/interviews/"+encodeURIC
 function centralStatus(t){const e=document.getElementById("centralStatus");if(e)e.textContent=t}
 async function persistNow(status){if(!interviewId)return;state.__idx=idx;if(status)state.__status=status;try{const r=await fetch("/api/interviews/"+encodeURIComponent(interviewId),{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({answers:state,summary:typeof narrative==="function"?narrative():"",conclusions:state.__conclusions||"",duration_ms:typeof elapsedMs==="function"?elapsedMs():0,operator_feedback:state.__operatorFeedback||{},status:state.__status||"in_progress"})});if(!r.ok)throw 0;localStorage.setItem("adhd_central_backup",JSON.stringify(state));centralStatus("salvato")}catch(e){localStorage.setItem("adhd_central_backup",JSON.stringify(state));centralStatus("backup locale")}}
 const E=c=>state[c]||{value:""};
-function save(){state.__idx=idx;localStorage.setItem("adhd_central_backup",JSON.stringify(state));centralStatus("salvataggio…");clearTimeout(saveTimer);saveTimer=setTimeout(()=>persistNow(),500)}catch(e){}}
+function save(){
+  state.__idx=idx;
+  try{
+    localStorage.setItem("adhd_central_backup",JSON.stringify(state));
+  }catch(e){}
+  centralStatus("salvataggio…");
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>persistNow(),500);
+}
 function dstat(d){const v=DM[d].map(c=>E(c).value).filter(x=>typeof x==="number");return{valid:v.length,total:DM[d].length,high:v.filter(x=>x>=2).length,mean:v.length?v.reduce((a,b)=>a+b,0)/v.length:null}}
 function dsig(d){
  const s=dstat(d);
@@ -738,7 +746,23 @@ document.getElementById("save").onclick=async()=>{await persistNow();alert("Sess
 document.getElementById("export").onclick=()=>{const payload={exported_at:new Date().toISOString(),answers:state,summary:narrative(),operator_feedback:state.__operatorFeedback||{},duration_ms:elapsedMs(),domains:{}};Object.keys(DM).forEach(d=>payload.domains[d]={...dstat(d),significant:dsig(d)});const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="intervista_adhd_v14.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 document.getElementById("import").onclick=()=>document.getElementById("file").click();document.getElementById("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);state=d.answers||d;idx=Number(state.__idx||0);scratch.value=state.__scratch||"";save();alert("Salvataggio caricato.");render()}catch(err){alert("File non valido.")}};r.readAsText(f);e.target.value=""};
 document.getElementById("reset").onclick=async()=>{if(confirm("Iniziare un nuovo colloquio?")){state={};idx=0;localStorage.removeItem("adhd_central_id");localStorage.removeItem("adhd_central_backup");await centralCreate();scratch.value="";render()}};
-async function bootstrap(){const id=localStorage.getItem("adhd_central_id");if(!(id&&await centralLoad(id)))await centralCreate();scratch.value=state.__scratch||"";centralStatus("connesso");render()}
+async function bootstrap(){
+  try{
+    let id=null;
+    try{id=localStorage.getItem("adhd_central_id");}catch(e){}
+    if(!(id&&await centralLoad(id))) await centralCreate();
+    scratch.value=state.__scratch||"";
+    centralStatus("connesso");
+    render();
+  }catch(err){
+    console.error(err);
+    centralStatus("errore di avvio");
+    const q=document.getElementById("question");
+    if(q) q.textContent="Errore di avvio dell’intervista. Ricaricare la pagina; se il problema persiste contattare l’amministratore.";
+    const helper=document.getElementById("helper");
+    if(helper) helper.textContent=String(err && err.message ? err.message : err);
+  }
+}
 bootstrap();
 setInterval(()=>{if(!state.__finishedAt)updateElapsed();},1000);
 </script>
