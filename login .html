@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ title }}</title><style>
+body{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:#f6f7f9;color:#17202a;margin:0}
+.box{max-width:390px;margin:80px auto;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:26px}
+h1{font-size:21px;margin:0 0 6px}.muted{color:#6b7280;font-size:13px;margin-bottom:18px}
+input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d1d5db;border-radius:10px;font-size:16px}
+button{width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-weight:700;font-size:15px}
+.err{background:#fff0f0;border:1px solid #efb5b5;padding:9px;border-radius:9px;margin-bottom:12px}
+</style></head><body><div class="box"><h1>{{ title }}</h1>
+<div class="muted">{% if admin %}Dashboard e dati aggregati{% else %}Intervista clinica centralizzata{% endif %}</div>
+{% if error %}<div class="err">{{ error }}</div>{% endif %}
+<form method="post"><input type="password" name="password" placeholder="Password" autofocus required><button type="submit">Accedi</button></form>
+</div></body></html>

@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Intervista clinica ADHD adulto · Central Pilot v2.0</title>
+<style>
+:root{--bg:#f6f7f9;--panel:#fff;--text:#17202a;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--accent2:#eef4ff;--warn:#fff7db}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{max-width:1240px;margin:auto;padding:24px}
+.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:18px}
+h1{font-size:22px;margin:0 0 3px}.muted{color:var(--muted);font-size:13px}
+.progress{width:300px}.track{height:8px;background:#e9edf2;border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--accent)}
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr) 280px;gap:18px;align-items:start}
+.panel,.card{background:var(--panel);border:1px solid var(--line);border-radius:16px}
+.sidebar{padding:12px;position:sticky;top:16px}.sec{width:100%;display:flex;justify-content:space-between;border:0;background:transparent;padding:10px;border-radius:9px;cursor:pointer}.sec.active{background:var(--accent2);font-weight:700;color:#1745aa}
+.card{padding:28px}.notes{padding:16px;position:sticky;top:16px}.notes h3{font-size:15px;margin:0 0 6px}.notes textarea{min-height:330px}
+.badges{display:flex;gap:8px;margin-bottom:14px}.badge{font-size:12px;padding:5px 8px;background:#f1f3f5;border-radius:999px}
+.q{font-size:25px;line-height:1.3;margin:8px 0 18px}.helper{font-size:14px;color:var(--muted);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}.score{padding:16px 8px;border:1px solid var(--line);background:#fff;border-radius:11px;font-size:19px;font-weight:700;cursor:pointer}.score small{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-top:4px}.score.sel{background:var(--accent2);border-color:var(--accent);color:#1745aa}
+textarea{width:100%;min-height:115px;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;resize:vertical}
+.controls{display:flex;justify-content:space-between;margin-top:22px}.btn{padding:10px 15px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.example-box{margin-top:16px;padding:14px;background:var(--warn);border:1px solid #ead99a;border-radius:12px}.example-box h4{margin:0 0 6px;font-size:14px}.example-box p{margin:0 0 9px;color:var(--muted);font-size:13px}.example-box textarea{min-height:90px}.live{margin-top:16px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.summary{display:none}.summary.show{display:block}.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.sumcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}.sumcard h2{font-size:16px;margin:0 0 12px}
+.domain{display:grid;grid-template-columns:1fr 58px;gap:10px;margin:11px 0}.bar{height:8px;background:#edf0f3;border-radius:99px;overflow:hidden;margin-top:5px}.bar span{display:block;height:100%;background:var(--accent)}
+.notice{padding:11px 13px;background:#f5f6f8;border:1px solid var(--line);border-radius:10px;margin:8px 0}.warn{background:var(--warn)}.pass{background:#edf8ef;border-color:#b9dfbf}.fail{background:#fff0f0;border-color:#efb5b5}.test-row{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:start}.test-status{font-weight:800}.feedback-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}.feedback-label{display:block;font-size:13px;font-weight:700;margin:10px 0 6px}.feedback-control{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:#fff;font:inherit}.feedback-value{min-height:44px;display:flex;align-items:center;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#f7f8fa;font-weight:700}@media(max-width:700px){.feedback-grid{grid-template-columns:1fr}}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.step{padding:10px;border:1px solid var(--line);border-radius:10px;text-align:center}.step.active{background:var(--accent2);border-color:var(--accent);font-weight:700}
+.annotation-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.annotation-add{padding:6px 9px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}.annotation-add:hover{background:var(--accent2);border-color:var(--accent)}.annotation-section{margin:14px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}.report-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:2px solid var(--line);padding-bottom:14px;margin-bottom:16px}
+.report-meta{display:grid;grid-template-columns:160px 1fr;gap:6px 12px;margin:14px 0 20px;font-size:14px}
+.report-meta div:nth-child(odd){color:var(--muted)}
+.report-text{white-space:pre-wrap;line-height:1.5}
+.report-note{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.4}
+.report-section-item{padding:10px 0;border-bottom:1px solid var(--line)}
+.report-section-item:last-child{border-bottom:0}
+.footer{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+@media print{
+  body{background:#fff}
+  .app>.top,.no-print,#interview,#summary{display:none!important}
+  #reportView{display:block!important}
+  #reportView .sumcard{border:0!important;max-width:none!important;padding:0!important}
+  .bar span{background:#333!important}
+  .report-note{page-break-inside:avoid}
+  @page{margin:16mm}
+}
+@media(max-width:980px){.layout{grid-template-columns:200px minmax(0,1fr)}.notes{grid-column:1/-1;position:static}.notes textarea{min-height:140px}}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto}.sec{min-width:max-content}.grid{grid-template-columns:repeat(3,1fr)}.sumgrid{grid-template-columns:1fr}.progress{width:180px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+      <div style="display:none" id="metaStore">
+        <input id="patientId"><input id="interviewer"><input id="referrer"><input id="visitDate">
+      </div>
+    <div><h1>Intervista clinica ADHD adulto</h1><div class="muted">Central Pilot v2.1 · <span id="centralStatus">connessione…</span> · <form method="post" action="/logout" style="display:inline"><button type="submit" style="border:0;background:none;color:#6b7280;padding:0;text-decoration:underline">Esci</button></form></div></div>
+    <div class="progress"><div class="muted" id="progTxt"></div><div class="track"><div class="fill" id="progFill"></div></div><div class="muted" id="elapsedTxt" style="margin-top:5px;text-align:right"></div></div>
+  </div>
+
+  <div id="interview" class="layout">
+    <aside class="panel sidebar" id="sidebar"></aside>
+    <main class="card">
+      <div class="badges"><span class="badge" id="code"></span><span class="badge" id="section"></span></div>
+      <div class="q" id="question"></div>
+      <div class="helper" id="helper"></div>
+      <div id="answer"></div>
+      <div id="inlineExample"></div>
+      <div class="live" id="live"></div>
+      <div class="controls">
+        <button class="btn" id="back">← Indietro</button>
+        <div><button class="btn" id="skip">Salta</button> <button class="btn primary" id="next">Avanti →</button></div>
+      </div>
+    </main>
+    <aside class="panel notes" id="notesPanel">
+      <h3>Appunti del colloquio</h3>
+      <div class="muted" style="margin-bottom:10px">Restano visibili durante il test e vengono trasferiti nelle conclusioni al riepilogo.</div>
+      <textarea id="scratch" placeholder="Appunti liberi dell’intervistatore…"></textarea>
+    </aside>
+  </div>
+
+  <section id="summary" class="summary">
+    <div class="sumgrid">
+      <div class="sumcard"><h2>Profilo sintomatologico</h2><div id="profile"></div></div>
+      <div class="sumcard"><h2>Compromissione funzionale</h2><div id="functioning"></div></div>
+      <div class="sumcard"><h2>Storia evolutiva</h2><div id="development"></div></div>
+      <div class="sumcard"><h2>Regolazione emotiva <span class="muted">· area associata</span></h2><div id="emotion"></div></div>
+      <div class="sumcard"><h2>Completezza dell’intervista</h2><div id="complete"></div></div>
+      <div class="sumcard"><h2>Elementi clinicamente rilevanti</h2><div id="high"></div></div>
+      <div class="sumcard"><h2>Sintesi clinica automatica</h2><div class="muted" style="margin-bottom:8px">Senza punteggi numerici</div><textarea id="autoSummary"></textarea></div>
+      <div class="sumcard">
+        <h2>Annotazioni cliniche raccolte</h2>
+        <div class="muted" style="margin-bottom:8px">Note ed esempi raccolti durante il colloquio, organizzati per area.</div>
+        <div id="allAnnotations"></div>
+      </div>
+      <div class="sumcard"><h2>Conclusioni dell’intervistatore</h2><textarea id="conclusions"></textarea></div>
+      <div class="sumcard" style="grid-column:1/-1">
+        <h2>Feedback dell’operatore</h2>
+        <div class="muted" style="margin-bottom:12px">Da compilare dopo il colloquio. Non modifica scoring, sintesi o report clinico.</div>
+
+        <div class="feedback-grid">
+          <div>
+            <label class="feedback-label">Durata del colloquio</label>
+            <div id="feedbackDuration" class="feedback-value">—</div>
+          </div>
+
+          <div>
+            <label class="feedback-label" for="feedbackSummary">Aderenza della sintesi automatica</label>
+            <select id="feedbackSummary" class="feedback-control">
+              <option value="">Seleziona…</option>
+              <option value="Sì">Sì</option>
+              <option value="Parzialmente">Parzialmente</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="feedback-label" for="feedbackCompleteness">Completezza percepita dell’intervista</label>
+            <select id="feedbackCompleteness" class="feedback-control">
+              <option value="">Seleziona…</option>
+              <option value="Completa">Completa</option>
+              <option value="Quasi completa">Quasi completa</option>
+              <option value="Incompleta">Incompleta</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="feedback-label" for="feedbackFlow">Fluidità del colloquio</label>
+            <select id="feedbackFlow" class="feedback-control">
+              <option value="">Seleziona…</option>
+              <option value="Buona">Buona</option>
+              <option value="Discreta">Discreta</option>
+              <option value="Scarsa">Scarsa</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="feedback-label" for="feedbackUnclear">Domande poco chiare, ridondanti o difficili da utilizzare</label>
+        <textarea id="feedbackUnclear" placeholder="Indicare codice/item e motivo, se presente."></textarea>
+
+        <label class="feedback-label" for="feedbackMissing">Informazioni che sono mancate durante il colloquio</label>
+        <textarea id="feedbackMissing" placeholder="Cosa sarebbe stato utile poter esplorare meglio?"></textarea>
+
+        <label class="feedback-label" for="feedbackNotes">Nota libera dell’operatore</label>
+        <textarea id="feedbackNotes" placeholder="Osservazioni generali sulla prova dello strumento."></textarea>
+      </div>
+
+      <div class="sumcard" id="algoTestCard" style="grid-column:1/-1;display:none"><h2>Test automatici dell’algoritmo</h2><div class="muted" style="margin-bottom:8px">Suite interna di regressione clinica · 18 casi sintetici</div><div id="algoTestResults"></div></div>
+      <div class="sumcard" style="grid-column:1/-1">
+        <div class="footer">
+          <button class="btn" id="edit">← Torna all’intervista</button>
+          <button class="btn" id="save">Salva nel database</button>
+          <button class="btn primary" id="reportBtn">Genera report</button> <button class="btn" id="export">Esporta JSON</button>
+          <button class="btn" id="import">Carica JSON</button>
+          <input id="file" type="file" accept=".json,application/json" style="display:none">
+          <button class="btn" id="reset">Nuovo colloquio</button> <button class="btn" id="testAlgo">Test algoritmo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+  <section id="reportView" class="summary">
+    <div class="sumcard" style="max-width:900px;margin:0 auto">
+      <div class="report-head">
+        <div>
+          <h1 style="margin:0 0 6px;font-size:24px">Report di valutazione clinica preliminare ADHD nell’adulto</h1>
+          <div class="muted">Intervista clinica strutturata</div>
+        </div>
+      </div>
+
+      <div class="report-meta" id="reportMeta"></div>
+
+      <h2>Motivo della valutazione</h2>
+      <div id="reportReason" class="report-text"></div>
+
+      <h2>Profilo clinico attuale</h2>
+      <div id="reportNarrative" class="report-text"></div>
+
+      <h2>Profilo dimensionale</h2>
+      <div id="reportDomains"></div>
+
+      <h2>Compromissione funzionale</h2>
+      <div id="reportFunctioning"></div>
+
+      <h2>Storia evolutiva</h2>
+      <div id="reportDevelopment"></div>
+
+      <h2>Regolazione emotiva</h2>
+      <div id="reportEmotion"></div>
+
+      <h2>Strategie compensatorie</h2>
+      <div id="reportCompensation" class="report-text"></div>
+
+      <h2>Diagnosi / ipotesi pregresse e trattamenti</h2>
+      <div id="reportPrevious" class="report-text"></div>
+
+      <h2>Conclusioni dell’intervistatore</h2>
+      <div id="reportConclusions" class="report-text"></div>
+
+      <div class="report-note">
+        Il presente documento riassume una valutazione clinica preliminare strutturata e non costituisce, isolatamente, diagnosi di ADHD.
+      </div>
+
+      <div class="footer no-print">
+        <button class="btn" id="backReport">← Torna al riepilogo</button>
+        <button class="btn primary" id="printReport">Stampa / Salva PDF</button>
+<button class="btn" id="exportReport">Esporta report</button>
+      </div>
+    </div>
+  </section>
+
+<script>
+const ITEMS = [
+{s:"A",c:"A0a",t:"text",q:"Identificativo del paziente / iniziali / codice interno."},
+{s:"A",c:"A0b",t:"text",q:"Nome dell’intervistatore."},
+{s:"A",c:"A0c",t:"text",q:"Professionista inviante, se presente."},
+{s:"A",c:"A0d",t:"text",q:"Data del colloquio.",h:"Formato libero, ad esempio 26/08/2026."},
+{s:"A",c:"A1",t:"text",q:"Quali difficoltà l'hanno portata a fare questa valutazione?"},
+{s:"A",c:"A2",t:"text",q:"In quali ambiti della sua vita queste difficoltà hanno un impatto maggiore?",h:"Studio, lavoro, casa/vita quotidiana, relazioni, organizzazione personale, gestione economica, altro."},
+{s:"A",c:"A3",t:"text",q:"Chi ha suggerito per primo la possibilità di ADHD?"},
+
+{s:"B",c:"B1",t:"ynv",q:"Da bambino/a le dicevano che era distratto/a, con la testa tra le nuvole o che faceva fatica a concentrarsi?"},
+{s:"B",c:"B2",t:"ynv",q:"Da bambino/a dimenticava o perdeva spesso materiale scolastico, compiti o altri oggetti necessari?"},
+{s:"B",c:"B3",t:"ynv",q:"Riusciva a iniziare e portare a termine i compiti autonomamente, oppure aveva bisogno che un adulto la seguisse o la sollecitasse frequentemente?"},
+{s:"B",c:"B4",t:"ynv",q:"Le dicevano che faceva fatica a stare fermo/a o seduto/a oppure che era particolarmente irrequieto/a?"},
+{s:"B",c:"B5",t:"ynv",q:"Da bambino/a tendeva ad agire senza pensare abbastanza, con difficoltà ad aspettare o a fermarsi un attimo prima di fare qualcosa?"},
+{s:"B",c:"B6",t:"text",q:"Quali fonti esterne sono disponibili per ricostruire il funzionamento nell'infanzia?",h:"Genitore, altro familiare, pagelle/documentazione scolastica, precedenti valutazioni o relazioni, altro, nessuna."},
+{s:"B",c:"B7",t:"evidence",q:"Valutazione complessiva dell'evidenza evolutiva."},
+
+{s:"C",c:"C1a",t:"text",q:"STUDIO — Quando doveva preparare un compito, un’interrogazione o un esame con anticipo, come si organizzava?"},
+{s:"C",c:"C1b",t:"text",q:"STUDIO — Le capitava di rimandare fino a quando la scadenza diventava urgente, dimenticare consegne o studiare quasi tutto all’ultimo momento?"},
+{s:"C",c:"C1c",t:"text",q:"STUDIO — Queste difficoltà hanno avuto conseguenze concrete sul rendimento o sul percorso scolastico o universitario?"},
+{s:"C",c:"C1",t:"imp",q:"Compromissione complessiva nello studio.",h:"Valutare le conseguenze concrete e il costo necessario per mantenere un funzionamento adeguato."},
+
+{s:"C",c:"C2a",t:"text",q:"LAVORO — Come gestisce più attività contemporaneamente o lavori con una scadenza non immediata?"},
+{s:"C",c:"C2b",t:"text",q:"LAVORO — Le capita di rimandare, dimenticare passaggi, commettere errori evitabili o lasciare attività incomplete?"},
+{s:"C",c:"C2c",t:"text",q:"LAVORO — Queste difficoltà hanno avuto conseguenze concrete sul lavoro?"},
+{s:"C",c:"C2",t:"imp",q:"Compromissione complessiva nel lavoro.",h:"Valutare le conseguenze concrete e il costo necessario per mantenere un funzionamento adeguato."},
+
+{s:"C",c:"C3a",t:"text",q:"VITA QUOTIDIANA — Come gestisce appuntamenti, pagamenti, documenti, faccende domestiche e altri impegni quotidiani?"},
+{s:"C",c:"C3b",t:"text",q:"VITA QUOTIDIANA — Le persone vicine a lei le fanno notare dimenticanze, scarsa capacità d’ascolto, disorganizzazione o attività lasciate incomplete?"},
+{s:"C",c:"C3c",t:"text",q:"VITA QUOTIDIANA — Queste difficoltà causano conflitti o altre conseguenze nella vita quotidiana o nelle relazioni?"},
+{s:"C",c:"C3",t:"imp",q:"Compromissione complessiva nella vita quotidiana e relazionale.",h:"Valutare le conseguenze concrete e il costo necessario per mantenere un funzionamento adeguato."},
+{s:"C",c:"C4",t:"text",q:"Ha avuto problemi legali o amministrativi nei quali ritiene che impulsività, disattenzione o disorganizzazione possano aver avuto un ruolo?"},
+
+{s:"D",c:"D1",t:"score",q:"Ha difficoltà nel concentrarsi durante letture, conversazioni, riunioni o altre attività che richiedono attenzione per un certo tempo?"},
+{s:"D",c:"D2",t:"score",q:"Mentre sta facendo qualcosa, rumori, persone, notifiche o ciò che accade intorno le fanno perdere facilmente il filo di quello che sta facendo?"},
+{s:"D",c:"D3",t:"score",q:"Anche senza essere disturbato/a, le capita di iniziare a pensare ad altro e accorgersi di non aver più seguito quello che stava leggendo, facendo o ascoltando?"},
+{s:"D",c:"D4",t:"score",q:"Le capita di arrivare alla fine di una pagina o di una parte di una conversazione e accorgersi di non aver seguito quello che ha appena letto o ascoltato?"},
+{s:"D",c:"D5",t:"score",q:"Come cambia la sua capacità di concentrarsi quando deve fare qualcosa di ripetitivo, monotono o poco interessante?"},
+{s:"D",c:"D6",t:"score",q:"Le capita di fare errori di distrazione o di non accorgersi di dettagli importanti, anche in attività che sa svolgere bene?"},
+
+{s:"E",c:"E1",t:"score",q:"Quando dovrebbe stare fermo/a o seduto/a a lungo, sente il bisogno di muoversi, cambiare posizione o manipolare qualcosa?"},
+{s:"E",c:"E2",t:"score",q:"Anche quando riesce a stare fermo/a, sente dentro di sé irrequietezza o il bisogno di fare qualcosa?"},
+{s:"E",c:"E3",t:"score",q:"Quanto le è difficile stare senza fare niente, rilassarsi o semplicemente rallentare?"},
+{s:"E",c:"E4",t:"score",q:"Le capita di sentirsi come se dovesse essere sempre impegnato/a in qualcosa, passando rapidamente da un’attività all’altra?"},
+
+{s:"F",c:"F1",t:"score",q:"Quando ha molte cose da fare, quanto le è difficile organizzarle e decidere da dove iniziare?"},
+{s:"F",c:"F2",t:"score",q:"Le capita di sapere che dovrebbe iniziare qualcosa ma di continuare a rimandare, anche sapendo che questo potrebbe crearle problemi?"},
+{s:"F",c:"F3",t:"score",q:"Le capita di iniziare diverse attività e passare da una all’altra lasciandone alcune incomplete?"},
+{s:"F",c:"F4",t:"score",q:"Dimentica facilmente appuntamenti, scadenze o cose che aveva intenzione di fare se non utilizza promemoria?"},
+{s:"F",c:"F5",t:"score",q:"Quando deve tenere a mente più informazioni o più passaggi mentre fa qualcosa, le capita di perderne qualcuno per strada?"},
+{s:"F",c:"F6",t:"score",q:"Quanto riesce a stimare in anticipo il tempo necessario per fare qualcosa?"},
+{s:"F",c:"F7",t:"score",q:"Quando ha molto tempo a disposizione, tende a concentrare il lavoro soprattutto quando la scadenza diventa vicina?"},
+{s:"F",c:"F8",t:"score",q:"Nota una differenza importante tra quanto riesce a concentrarsi e attivarsi per qualcosa che la interessa o la coinvolge e quanto riesce a farlo per qualcosa che considera noioso o poco gratificante?"},
+{s:"F",c:"F9",t:"yesno",dep:["F8",2],q:"Quando qualcosa la interessa molto, le capita di rimanerne assorbito/a al punto da perdere la percezione del tempo o trascurare quello che dovrebbe fare?"},
+{s:"F",c:"F10",t:"yesno",q:"Utilizza abitualmente strategie o sistemi per evitare dimenticanze, ritardi o problemi di organizzazione?"},
+{s:"F",c:"F10a",t:"text",depEq:["F10","Sì"],q:"Quali strategie o sistemi utilizza?"},
+{s:"F",c:"F10b",t:"text",depEq:["F10","Sì"],q:"Cosa succede quando non può utilizzare questi sistemi?"},
+
+{s:"G",c:"G1",t:"score",q:"Le capita di agire d’impulso e rendersi conto solo dopo che sarebbe stato meglio fermarsi a riflettere?",h:"Esplorare: decisioni importanti, acquisti/spese, conversazioni, guida, comportamenti a rischio, utilizzo di sostanze, gioco/scommesse, altro."},
+{s:"G",c:"G2",t:"yesno",dep:["G1",2],q:"Questo modo di agire le ha mai causato problemi o conseguenze significative?"},
+{s:"G",c:"G3",t:"score",q:"Quando sente un impulso forte, quanto le è difficile fermarsi prima di agire?"},
+
+{s:"H",c:"H1",t:"score",q:"Le capita di reagire emotivamente in modo molto intenso a frustrazioni, inconvenienti o contrattempi?"},
+{s:"H",c:"H2",t:"score",q:"Quando si irrita o si arrabbia, le è difficile controllare la reazione o le serve molto tempo per tornare tranquillo/a?"},
+{s:"H",c:"H3",t:"yesno",depAny:[["H1",2],["H2",2]],q:"Queste reazioni le hanno causato problemi nelle relazioni, nello studio, nel lavoro o in altri ambiti?"},
+
+{s:"I",c:"I1",t:"yesno",q:"Uno psicologo o uno psichiatra le ha mai formulato una diagnosi o ipotizzato la presenza di un disturbo psicologico o psichiatrico?"},
+{s:"I",c:"I1a",t:"text",depEq:["I1","Sì"],q:"Quale diagnosi o ipotesi è stata formulata?"},
+{s:"I",c:"I1b",t:"text",depEq:["I1","Sì"],q:"Da quale professionista?"},
+{s:"I",c:"I1c",t:"text",depEq:["I1","Sì"],q:"In quale periodo?"},
+{s:"I",c:"I2",t:"yesno",depEq:["I1","Sì"],q:"Ha effettuato trattamenti psicologici o psichiatrici in relazione a queste difficoltà?"},
+{s:"I",c:"I2a",t:"text",depEq:["I2","Sì"],q:"Quali trattamenti?"},
+{s:"I",c:"I3",t:"yesno",depEq:["I1","Sì"],q:"Ha assunto o assume farmaci per queste difficoltà?"},
+{s:"I",c:"I3a",t:"text",depEq:["I3","Sì"],q:"Quali farmaci?"}
+];
+
+const SECTIONS={A:"Motivo",B:"Infanzia",C:"Funzionamento",D:"Attenzione",E:"Iperattività",F:"Funzioni esecutive",G:"Impulsività",H:"Emozioni",I:"Pregresse"};
+const DM={"Attenzione":["D1","D2","D3","D4","D5","D6"],"Iperattività/irrequietezza":["E1","E2","E3","E4"],"Funzioni esecutive":["F1","F2","F3","F4","F5","F6","F7","F8"],"Impulsività/autocontrollo":["G1","G3"]};
+const MINV={"Attenzione":4,"Iperattività/irrequietezza":3,"Funzioni esecutive":6,"Impulsività/autocontrollo":2};
+const MINH={"Attenzione":3,"Iperattività/irrequietezza":2,"Funzioni esecutive":4,"Impulsività/autocontrollo":2};
+const SL={0:"Assente",1:"Lieve",2:"Significativo",3:"Marcato",NV:"Non valutabile"};
+const IL={0:"Nessuna",1:"Lieve",2:"Significativa",3:"Marcata",NV:"Non valutabile",NA:"Non applicabile"};
+
+let state={}; let idx=0; let interviewId=null; let saveTimer=null;
+async function centralCreate(){const r=await fetch("/api/interviews",{method:"POST"});const d=await r.json();interviewId=d.id;localStorage.setItem("adhd_central_id",interviewId)}
+async function centralLoad(id){const r=await fetch("/api/interviews/"+encodeURIComponent(id));if(!r.ok)return false;const d=await r.json();state=d.answers||{};idx=Number(state.__idx||0);interviewId=id;return true}
+function centralStatus(t){const e=document.getElementById("centralStatus");if(e)e.textContent=t}
+async function persistNow(status){if(!interviewId)return;state.__idx=idx;if(status)state.__status=status;try{const r=await fetch("/api/interviews/"+encodeURIComponent(interviewId),{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({answers:state,summary:typeof narrative==="function"?narrative():"",conclusions:state.__conclusions||"",duration_ms:typeof elapsedMs==="function"?elapsedMs():0,operator_feedback:state.__operatorFeedback||{},status:state.__status||"in_progress"})});if(!r.ok)throw 0;localStorage.setItem("adhd_central_backup",JSON.stringify(state));centralStatus("salvato")}catch(e){localStorage.setItem("adhd_central_backup",JSON.stringify(state));centralStatus("backup locale")}}
+const E=c=>state[c]||{value:""};
+function save(){state.__idx=idx;localStorage.setItem("adhd_central_backup",JSON.stringify(state));centralStatus("salvataggio…");clearTimeout(saveTimer);saveTimer=setTimeout(()=>persistNow(),500)}catch(e){}}
+function dstat(d){const v=DM[d].map(c=>E(c).value).filter(x=>typeof x==="number");return{valid:v.length,total:DM[d].length,high:v.filter(x=>x>=2).length,mean:v.length?v.reduce((a,b)=>a+b,0)/v.length:null}}
+function dsig(d){
+ const s=dstat(d);
+ if(s.valid<MINV[d])return false;
+ if(d==="Impulsività/autocontrollo"){
+   const g1=E("G1").value,g3=E("G3").value;
+   return s.mean>=2 || ((g1===3&&typeof g3==="number"&&g3>=1)||(g3===3&&typeof g1==="number"&&g1>=1));
+ }
+ return s.mean>=2||s.high>=MINH[d];
+}
+function estat(){const v=["H1","H2"].map(c=>E(c).value).filter(x=>typeof x==="number");return{valid:v.length,mean:v.length?v.reduce((a,b)=>a+b,0)/v.length:null}}
+function visible(i){
+ if(i.dep){const v=E(i.dep[0]).value;return typeof v==="number"&&v>=i.dep[1]}
+ if(i.depEq)return E(i.depEq[0]).value===i.depEq[1];
+ if(i.depAny)return i.depAny.some(d=>typeof E(d[0]).value==="number"&&E(d[0]).value>=d[1]);
+ if(i.depDomain)return dsig(i.depDomain);
+ if(i.depEmotion){const s=estat();return s.valid&&s.mean>=2}
+ if(i.depImp){const v=E(i.depImp).value;return typeof v==="number"&&v>=1}
+ return true
+}
+function items(){return ITEMS.filter(visible)}
+function cur(){const a=items();idx=Math.max(0,Math.min(idx,a.length-1));return a[idx]}
+function side(){
+ const s=document.getElementById("sidebar");s.innerHTML="";
+ Object.entries(SECTIONS).forEach(([k,n])=>{
+   const vis=items().filter(x=>x.s===k),done=vis.filter(x=>E(x.c).value!==""&&E(x.c).value!=null).length;
+   const b=document.createElement("button");b.className="sec"+(cur().s===k?" active":"");b.innerHTML=`<span>${n}</span><small>${done}/${vis.length}</small>`;
+   b.onclick=()=>{const a=items(),j=a.findIndex(x=>x.s===k);if(j>=0){idx=j;render()}};s.appendChild(b)
+ })
+}
+function buttonGrid(vals,labels,it){
+ const g=document.createElement("div");g.className="grid";
+ vals.forEach(v=>{const b=document.createElement("button");b.className="score"+(E(it.c).value===v?" sel":"");b.innerHTML=`${v}<small>${labels[v]||""}</small>`;b.onclick=()=>{state[it.c]={...(state[it.c]||{}),value:v};save();render()};g.appendChild(b)});
+ return g
+}
+
+function ensureInterviewStart(){
+  if(!state.__startedAt){
+    state.__startedAt=Date.now();
+    save();
+  }
+}
+function elapsedMs(){
+  if(!state.__startedAt)return 0;
+  const end=state.__finishedAt||Date.now();
+  return Math.max(0,end-state.__startedAt);
+}
+function formatDuration(ms){
+  const total=Math.round(ms/1000),m=Math.floor(total/60),s=total%60;
+  if(m<60)return `${m} min ${String(s).padStart(2,"0")} s`;
+  const h=Math.floor(m/60),rm=m%60;
+  return `${h} h ${rm} min`;
+}
+function updateElapsed(){
+  const el=document.getElementById("elapsedTxt");
+  if(el)el.textContent=`Tempo: ${formatDuration(elapsedMs())}`;
+}
+function render(){
+ ensureInterviewStart();updateElapsed();
+ document.getElementById("summary").classList.remove("show");document.getElementById("reportView").classList.remove("show");document.getElementById("interview").style.display="grid";
+ const a=items(),it=cur();side();document.getElementById("progTxt").textContent=`${idx+1} / ${a.length} · ${SECTIONS[it.s]}`;document.getElementById("progFill").style.width=`${(idx+1)/a.length*100}%`;
+ document.getElementById("code").textContent=it.c;document.getElementById("section").textContent=SECTIONS[it.s];document.getElementById("question").textContent=it.q;document.getElementById("helper").textContent=it.h||"";
+ const A=document.getElementById("answer");A.innerHTML="";
+ if(it.t==="score")A.appendChild(buttonGrid([0,1,2,3,"NV"],SL,it));
+ else if(it.t==="imp")A.appendChild(buttonGrid([0,1,2,3,"NV","NA"],IL,it));
+ else if(it.t==="yesno"||it.t==="ynv"||it.t==="evidence"){
+   const vals=it.t==="yesno"?["No","Sì"]:it.t==="ynv"?["No","Sì","NV"]:["Assente","Incerta","Presente"];
+   const g=document.createElement("div");g.className="grid";g.style.gridTemplateColumns=`repeat(${vals.length},1fr)`;
+   vals.forEach(v=>{const b=document.createElement("button");b.className="score"+(E(it.c).value===v?" sel":"");b.textContent=v==="NV"?"Non valutabile":v;b.onclick=()=>{state[it.c]={...(state[it.c]||{}),value:v};save();render()};g.appendChild(b)});A.appendChild(g)
+ }else{
+   const t=document.createElement("textarea");t.value=E(it.c).value||"";t.placeholder="Annotazione sintetica";t.oninput=()=>{state[it.c]={value:t.value};save()};A.appendChild(t)
+ }
+ const inline=document.getElementById("inlineExample");inline.innerHTML="";
+ const currentVal=E(it.c).value;
+ const needsScoredExample=(it.t==="score"||it.t==="imp") && typeof currentVal==="number" && currentVal>=2;
+ const needsDevelopmentNote=it.s==="B" && ["B1","B2","B3","B4","B5"].includes(it.c) && currentVal==="Sì";
+ if(needsScoredExample || needsDevelopmentNote){
+   const box=document.createElement("div");box.className="example-box";
+   const title=document.createElement("h4");
+   title.textContent=needsScoredExample?"Esempio clinico richiesto":"Annotazione / esempio evolutivo";
+   const desc=document.createElement("p");
+   desc.textContent=needsScoredExample
+     ?"Annotare un esempio concreto che giustifichi lo score 2–3. Verrà riportato negli elementi clinicamente rilevanti."
+     :"Annotazione facoltativa su un episodio, comportamento o informazione anamnestica significativa.";
+   const ta=document.createElement("textarea");
+   ta.placeholder=needsScoredExample?"Esempio concreto…":"Annotazione evolutiva…";
+   ta.value=E(it.c).note||"";
+   ta.oninput=()=>{state[it.c]={...(state[it.c]||{}),value:E(it.c).value,note:ta.value};save()};
+   box.appendChild(title);box.appendChild(desc);box.appendChild(ta);inline.appendChild(box);
+ }
+ const L=document.getElementById("live");
+ const dom=Object.keys(DM).find(d=>DM[d].includes(it.c));
+ if(it.t==="score"&&dom){const s=dstat(dom);L.innerHTML=`Dominio: <strong>${dom}</strong> · item ≥2: <strong>${s.high}/${s.total}</strong> · <strong>${dsig(dom)?"significativo":"non significativo / incompleto"}</strong>`}
+ else if(it.t==="imp")L.textContent="Compromissione funzionale: misura l’interferenza concreta e il costo del funzionamento, non la presenza del sintomo.";
+ else if(it.s==="B")L.textContent="Storia evolutiva: valutazione qualitativa, non numerica.";
+ else if(it.s==="H")L.textContent="Regolazione emotiva: area associata, separata dal profilo principale.";
+ else L.textContent="";
+ document.getElementById("back").disabled=idx===0;document.getElementById("back").onclick=()=>{if(idx>0){idx--;save();render()}};
+ document.getElementById("skip").onclick=()=>{
+   const v=E(it.c).value;
+   const needs=(it.t==="score"||it.t==="imp") && typeof v==="number" && v>=2;
+   if(needs && !(E(it.c).note||"").trim()){
+     alert("Per uno score 2 o 3 è necessario inserire un esempio clinico.");
+     return;
+   }
+   idx=Math.min(idx+1,items().length-1);save();render()
+ };
+ document.getElementById("next").textContent=idx===a.length-1?"Vai alla sintesi →":"Avanti →";
+ document.getElementById("next").onclick=()=>{
+   const v=E(it.c).value;
+   const needs=(it.t==="score"||it.t==="imp") && typeof v==="number" && v>=2;
+   if(needs && !(E(it.c).note||"").trim()){
+     alert("Per uno score 2 o 3 è necessario inserire un esempio clinico.");
+     return;
+   }
+   if(idx===items().length-1)showSummary();else{idx++;save();render()}
+ }
+}
+const scratch=document.getElementById("scratch");scratch.value=state.__scratch||"";scratch.addEventListener("input",()=>{state.__scratch=scratch.value;save()});
+function join(a){if(!a.length)return"";if(a.length===1)return a[0];if(a.length===2)return a[0]+" e "+a[1];return a.slice(0,-1).join(", ")+" e "+a[a.length-1]}
+function descriptions(d){
+ const h=c=>typeof E(c).value==="number"&&E(c).value>=2;
+ const M={
+  "Attenzione":[["D1","mantenere la concentrazione nel tempo"],["D2","filtrare le distrazioni esterne"],["D3","mantenere il filo dell’attività"],["D4","seguire con continuità ciò che viene letto o ascoltato"],["D5","sostenere l’attenzione nelle attività monotone"],["D6","evitare errori di distrazione"]],
+  "Iperattività/irrequietezza":[["E1","controllare il bisogno di movimento"],["E2","gestire l’irrequietezza interna"],["E3","rallentare e tollerare l’inattività"],["E4","ridurre la necessità di essere costantemente impegnato/a"]],
+  "Funzioni esecutive":[["F1","organizzare le attività e stabilire le priorità"],["F2","avviare i compiti senza procrastinare"],["F3","portare a termine le attività"],["F4","ricordare appuntamenti, scadenze e intenzioni future"],["F5","mantenere a mente più passaggi durante un’attività"],["F6","stimare e gestire il tempo"],["F7","distribuire il lavoro prima delle scadenze"],["F8","mantenere una prestazione stabile anche senza interesse, urgenza o gratificazione immediata"]],
+  "Impulsività/autocontrollo":[["G1","valutare le conseguenze prima di agire"],["G3","inibire e modulare gli impulsi"]]
+ };return M[d].filter(x=>h(x[0])).map(x=>x[1])
+}
+function narrative(){
+ const labels={"Attenzione":"dell’attenzione","Iperattività/irrequietezza":"dell’iperattività e dell’irrequietezza","Funzioni esecutive":"delle funzioni esecutive","Impulsività/autocontrollo":"dell’impulsività e dell’autocontrollo"};
+ const sig=Object.keys(DM).filter(dsig),out=[];
+
+ if(sig.length){
+   sig.forEach(d=>{
+     const p=descriptions(d);
+     out.push(`Dal colloquio emerge una compromissione significativa nel dominio ${labels[d]}${p.length?`, con difficoltà nel ${join(p)}`:""}.`);
+   });
+ } else {
+   const mild=Object.keys(DM).filter(d=>{
+     const s=dstat(d);
+     return s.valid>=MINV[d] && s.mean>=1 && s.mean<2;
+   });
+   if(mild.length){
+     const mildLabels=mild.map(d=>labels[d]);
+     out.push(`Dal colloquio emergono difficoltà di entità lieve o moderata nei domini ${join(mildLabels)}, senza che il profilo raggiunga i criteri interni utilizzati per definire un dominio come significativamente interessato.`);
+   } else {
+     out.push("Dal colloquio non emergono difficoltà clinicamente rilevanti nei principali domini sintomatologici esplorati.");
+   }
+ }
+
+ const imp=[];
+ [["C1","studio"],["C2","lavoro"],["C3","vita quotidiana e relazioni"]].forEach(([c,l])=>{
+   const v=E(c).value;
+   if(typeof v==="number"&&v>=2)imp.push(l)
+ });
+ const iv=["C1","C2","C3"].filter(c=>typeof E(c).value==="number").length;
+
+ if(imp.length){
+   out.push(`Le difficoltà emerse si associano a una compromissione funzionale significativa ${imp.length===1?"nel contesto di":"nei contesti di"} ${join(imp)}.`);
+ } else if(iv>=2 && sig.length){
+   out.push("Le difficoltà sintomatologiche rilevate non risultano associate, nei contesti esplorati, a una compromissione funzionale significativa.");
+ } else if(iv>=2){
+   out.push("Non emerge una compromissione funzionale significativa nei contesti esplorati.");
+ } else {
+   out.push("La compromissione funzionale non risulta sufficientemente documentata.");
+ }
+
+ const b=E("B7").value;
+ if(b==="Presente"){
+   out.push("Sono presenti elementi anamnestici coerenti con la presenza di difficoltà analoghe già in età evolutiva.");
+ } else if(b==="Incerta"){
+   if(sig.length) out.push("Il profilo attuale risulta clinicamente significativo, mentre la ricostruzione dell’età evolutiva fornisce elementi parziali o non sufficientemente definiti e richiede ulteriore approfondimento.");
+   else out.push("La ricostruzione dell’età evolutiva fornisce elementi parziali o non sufficientemente definiti.");
+ } else if(b==="Assente"){
+   if(sig.length) out.push("Il profilo attuale risulta clinicamente significativo, ma la ricostruzione anamnestica non documenta la presenza di difficoltà analoghe già in età evolutiva.");
+   else out.push("La ricostruzione anamnestica non evidenzia elementi significativi riferibili all’età evolutiva.");
+ }
+
+ const es=estat();
+ if(es.valid&&es.mean>=2)out.push("Emergono inoltre significative difficoltà nella regolazione emotiva, considerate come area associata.");
+ if(E("F10").value==="Sì")out.push("Il funzionamento attuale è sostenuto anche dall’impiego di strategie compensatorie.");
+
+ return out.join(" ");
+}
+function completeness(){
+ const required=ITEMS.filter(i=>!i.dep&&!i.depEq&&!i.depAny&&!i.depDomain&&!i.depEmotion&&!i.depImp&&i.c!=="C4");
+ const done=required.filter(i=>E(i.c).value!==""&&E(i.c).value!=null).length;
+ const missing=[];
+ Object.keys(DM).forEach(d=>{if(dstat(d).valid<MINV[d])missing.push(d)});
+ if(["C1","C2","C3"].filter(c=>E(c).value!==""&&E(c).value!=null).length<2)missing.push("Compromissione funzionale");
+ if(!E("B7").value)missing.push("Storia evolutiva");
+ ITEMS.filter(i=>i.t==="score"||i.t==="imp").forEach(i=>{
+   const v=E(i.c).value;
+   if(typeof v==="number"&&v>=2&&!(E(i.c).note||"").trim())missing.push(`Esempio mancante: ${i.c}`);
+ });
+ return{done,total:required.length,pct:Math.round(done/required.length*100),missing}
+}
+
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+function annotationRecords(){
+ const out=[];
+ const sectionNames={A:"Motivo della valutazione",B:"Storia evolutiva",C:"Funzionamento",D:"Attenzione",E:"Iperattività/irrequietezza",F:"Funzioni esecutive",G:"Impulsività/autocontrollo",H:"Regolazione emotiva",I:"Pregresse valutazioni/trattamenti"};
+ const short={
+  B1:"Attenzione/concentrazione nell’infanzia",B2:"Dimenticanze/perdita di oggetti nell’infanzia",
+  B3:"Autonomia nei compiti nell’infanzia",B4:"Iperattività/irrequietezza nell’infanzia",B5:"Impulsività nell’infanzia"
+ };
+ ITEMS.forEach(i=>{
+   const e=E(i.c);
+   const note=(e.note||"").trim();
+   if(note) out.push({section:sectionNames[i.s],code:i.c,title:short[i.c]||i.q,text:note,kind:"Esempio / annotazione"});
+   if(i.t==="text"){
+     const val=(e.value||"").trim();
+     if(val) out.push({section:sectionNames[i.s],code:i.c,title:i.q,text:val,kind:"Annotazione"});
+   }
+ });
+ return out;
+}
+function addAnnotationToConclusions(n){
+ const rec=annotationRecords()[n]; if(!rec)return;
+ const ta=document.getElementById("conclusions");
+ const block=rec.text;
+ const current=ta.value.trim();
+ ta.value=current?current+"\n\n"+block:block;
+ state.__conclusions=ta.value;save();
+ ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);
+}
+function renderAnnotations(){
+ const el=document.getElementById("allAnnotations"),records=annotationRecords();
+ if(!records.length){el.innerHTML='<div class="notice">Nessuna annotazione clinica raccolta.</div>';return}
+ let current="",html="";
+ records.forEach((r,n)=>{
+   if(r.section!==current){current=r.section;html+=`<div class="annotation-section">${esc(current)}</div>`}
+   html+=`<div class="notice"><div class="annotation-head"><div><strong>${esc(r.code)} · ${esc(r.title)}</strong><br><span class="muted">${esc(r.kind)}</span></div><button class="annotation-add" onclick="addAnnotationToConclusions(${n})">+ Inserisci nelle conclusioni</button></div><div style="margin-top:8px;white-space:pre-wrap">${esc(r.text)}</div></div>`;
+ });
+ el.innerHTML=html;
+}
+
+
+function nz(v, fallback="Non indicato"){
+  const s=(v??"").toString().trim();
+  return s||fallback;
+}
+function reportLine(label,value){
+  return `<div>${esc(label)}</div><div>${esc(value)}</div>`;
+}
+function renderReport(){
+  // Assicura che appunti persistenti siano disponibili nelle conclusioni
+  const scratch=(state.__scratch||"").trim();
+  if(scratch && !(state.__conclusions||"").trim()){
+    state.__conclusions=scratch;
+  }
+
+  document.getElementById("reportMeta").innerHTML=
+    reportLine("Identificativo", nz(E("A0a").value))+
+    reportLine("Data del colloquio", nz(E("A0d").value))+
+    reportLine("Intervistatore", nz(E("A0b").value))+
+    reportLine("Professionista inviante", nz(E("A0c").value));
+
+  const reasonParts=[];
+  if((E("A1").value||"").trim()) reasonParts.push(E("A1").value.trim());
+  if((E("A2").value||"").trim()) reasonParts.push("Ambiti maggiormente interessati: "+E("A2").value.trim());
+  if((E("A3").value||"").trim()) reasonParts.push("Ipotesi ADHD suggerita da: "+E("A3").value.trim());
+  document.getElementById("reportReason").textContent=reasonParts.join("\n")||"Non specificato.";
+
+  document.getElementById("reportNarrative").textContent=narrative();
+
+  const rd=document.getElementById("reportDomains"); rd.innerHTML="";
+  Object.keys(DM).forEach(d=>{
+    const s=dstat(d),v=s.mean==null?"—":s.mean.toFixed(1)+"/3";
+    rd.innerHTML+=`<div class="domain"><div><strong>${esc(d)}</strong><div class="bar"><span style="width:${s.mean==null?0:s.mean/3*100}%"></span></div></div><div><strong>${v}</strong></div></div>`;
+  });
+
+  const rf=document.getElementById("reportFunctioning"); rf.innerHTML="";
+  [["C1","Studio"],["C2","Lavoro"],["C3","Vita quotidiana/relazioni"]].forEach(([c,l])=>{
+    const v=E(c).value;
+    const text=typeof v==="number"?`${v}/3`:v||"—";
+    const note=(E(c).note||"").trim();
+    rf.innerHTML+=`<div class="report-section-item"><strong>${esc(l)}: ${esc(text)}</strong>${note?`<div style="margin-top:5px">${esc(note)}</div>`:""}</div>`;
+  });
+
+  const b=E("B7").value||"Non definita";
+  let dev=`<strong>Evidenza evolutiva: ${esc(b)}</strong>`;
+  const source=(E("B6").value||"").trim();
+  if(source) dev+=`<div style="margin-top:5px"><strong>Fonti esterne:</strong> ${esc(source)}</div>`;
+  const bLabels={B1:"Attenzione/concentrazione",B2:"Dimenticanze/perdita di oggetti",B3:"Autonomia nei compiti",B4:"Iperattività/irrequietezza",B5:"Impulsività"};
+  ["B1","B2","B3","B4","B5"].forEach(c=>{
+    if(E(c).value==="Sì"){
+      const note=(E(c).note||"").trim();
+      dev+=`<div class="report-section-item"><strong>${bLabels[c]}</strong>${note?`<div>${esc(note)}</div>`:""}</div>`;
+    }
+  });
+  document.getElementById("reportDevelopment").innerHTML=dev;
+
+  const es=estat();
+  let emotionText="Non sufficientemente valutata";
+  if(es.valid) emotionText=es.mean>=2?"Significativa":es.mean>=1?"Presente":"Non significativa";
+  const hnote=(E("HX").value||"").trim();
+  let emotionDescription="";
+  if(emotionText==="Presente") emotionDescription="La sintomatologia emersa durante il colloquio suggerisce un’instabilità emotiva potenzialmente correlata all’ADHD.";
+  else if(emotionText==="Significativa") emotionDescription="La sintomatologia emersa durante il colloquio suggerisce un’instabilità emotiva significativa, potenzialmente correlata all’ADHD.";
+  document.getElementById("reportEmotion").innerHTML=`<strong>${esc(emotionText)}</strong>${emotionDescription?`<div style="margin-top:7px">${esc(emotionDescription)}</div>`:""}${hnote?`<div style="margin-top:5px">${esc(hnote)}</div>`:""}`;
+
+  const comp=[];
+  if(E("F10").value==="Sì"){
+    comp.push("Sono presenti strategie compensatorie.");
+    if((E("F10a").value||"").trim()) comp.push("Strategie utilizzate: "+E("F10a").value.trim());
+    if((E("F10b").value||"").trim()) comp.push("In assenza delle strategie: "+E("F10b").value.trim());
+  } else if(E("F10").value==="No"){
+    comp.push("Non sono state riferite strategie compensatorie abituali.");
+  }
+  document.getElementById("reportCompensation").textContent=comp.join("\n")||"Non documentato.";
+
+  const prev=[];
+  if(E("I1").value==="Sì"){
+    if((E("I1a").value||"").trim()) prev.push("Diagnosi/ipotesi: "+E("I1a").value.trim());
+    if((E("I1b").value||"").trim()) prev.push("Professionista: "+E("I1b").value.trim());
+    if((E("I1c").value||"").trim()) prev.push("Periodo: "+E("I1c").value.trim());
+    if(E("I2").value==="Sì" && (E("I2a").value||"").trim()) prev.push("Trattamenti: "+E("I2a").value.trim());
+    if(E("I3").value==="Sì" && (E("I3a").value||"").trim()) prev.push("Farmaci: "+E("I3a").value.trim());
+  } else if(E("I1").value==="No"){
+    prev.push("Non risultano diagnosi o ipotesi psicologiche/psichiatriche precedentemente formulate.");
+  }
+  document.getElementById("reportPrevious").textContent=prev.join("\n")||"Non documentato.";
+
+  document.getElementById("reportConclusions").textContent=nz(state.__conclusions,"Non compilate.");
+  save();
+}
+
+function exportReportDocument(){
+  renderReport();
+  const report=document.querySelector('#reportView .sumcard').cloneNode(true);
+  report.querySelectorAll('.no-print').forEach(x=>x.remove());
+  const css=`body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#17202a;max-width:820px;margin:32px auto;padding:0 24px;line-height:1.45}h1{font-size:24px}h2{font-size:17px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:6px}.muted{color:#6b7280}.report-meta{display:grid;grid-template-columns:160px 1fr;gap:6px 12px;margin:18px 0}.domain{display:grid;grid-template-columns:1fr 60px;gap:10px;margin:10px 0}.bar{height:8px;background:#edf0f3;border-radius:99px;overflow:hidden;margin-top:5px}.bar span{display:block;height:100%;background:#333}.report-section-item{padding:9px 0;border-bottom:1px solid #e5e7eb}.report-note{margin-top:28px;padding-top:12px;border-top:1px solid #ddd;color:#6b7280;font-size:12px}@media print{@page{margin:16mm}body{margin:0;max-width:none}}`;
+  const doc='<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report ADHD</title><style>'+css+'</style></head><body>'+report.innerHTML+'</body></html>';
+  const blob=new Blob([doc],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='report_valutazione_adhd.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+function showReport(){
+  document.getElementById("summary").classList.remove("show");
+  document.getElementById("interview").style.display="none";
+  document.getElementById("reportView").classList.add("show");
+  renderReport();
+}
+
+
+const CLINICAL_TESTS=[{"id": 1, "name": "Profilo negativo", "scores": {"D1": 0, "D2": 0, "D3": 1, "D4": 0, "D5": 1, "D6": 0, "E1": 0, "E2": 0, "E3": 1, "E4": 0, "F1": 0, "F2": 1, "F3": 0, "F4": 0, "F5": 1, "F6": 0, "F7": 1, "F8": 0, "G1": 0, "G3": 0}, "impairment": {"C1": 0, "C2": 0, "C3": 0}, "history": "Assente", "emotion": {"H1": 0, "H2": 0}, "expect": {"domains": [], "emotion": "Non significativa"}}, {"id": 2, "name": "Difficoltà diffuse lievi", "scores": {"D1": 1, "D2": 1, "D3": 1, "D4": 1, "D5": 1, "D6": 1, "E1": 1, "E2": 1, "E3": 1, "E4": 1, "F1": 1, "F2": 1, "F3": 1, "F4": 1, "F5": 1, "F6": 1, "F7": 1, "F8": 1, "G1": 1, "G3": 1}, "impairment": {"C1": 1, "C2": 1, "C3": 1}, "history": "Incerta", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": [], "emotion": "Presente"}}, {"id": 3, "name": "Attentivo netto", "scores": {"D1": 3, "D2": 3, "D3": 2, "D4": 2, "D5": 1, "D6": 2, "E1": 0, "E2": 0, "E3": 1, "E4": 0, "F1": 1, "F2": 1, "F3": 0, "F4": 1, "F5": 1, "F6": 0, "F7": 1, "F8": 1, "G1": 0, "G3": 0}, "impairment": {"C1": 2, "C2": 2, "C3": 1}, "history": "Presente", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": ["Attenzione"]}}, {"id": 4, "name": "Attentivo selettivo 3/6", "scores": {"D1": 3, "D2": 3, "D3": 3, "D4": 0, "D5": 0, "D6": 0, "E1": 0, "E2": 0, "E3": 0, "E4": 0, "F1": 0, "F2": 1, "F3": 0, "F4": 1, "F5": 0, "F6": 0, "F7": 1, "F8": 0, "G1": 0, "G3": 0}, "impairment": {"C1": 2, "C2": 1, "C3": 2}, "history": "Presente", "emotion": {"H1": 0, "H2": 0}, "expect": {"domains": ["Attenzione"]}}, {"id": 5, "name": "Esecutivo netto", "scores": {"D1": 1, "D2": 1, "D3": 1, "D4": 0, "D5": 1, "D6": 0, "E1": 0, "E2": 0, "E3": 1, "E4": 0, "F1": 3, "F2": 3, "F3": 2, "F4": 3, "F5": 2, "F6": 2, "F7": 3, "F8": 2, "G1": 0, "G3": 1}, "impairment": {"C1": 2, "C2": 3, "C3": 2}, "history": "Presente", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": ["Funzioni esecutive"]}}, {"id": 6, "name": "Esecutivo selettivo 4/8", "scores": {"D1": 0, "D2": 1, "D3": 0, "D4": 1, "D5": 0, "D6": 1, "E1": 0, "E2": 0, "E3": 1, "E4": 0, "F1": 3, "F2": 3, "F3": 3, "F4": 3, "F5": 0, "F6": 0, "F7": 0, "F8": 0, "G1": 0, "G3": 0}, "impairment": {"C1": 2, "C2": 2, "C3": 1}, "history": "Presente", "emotion": {"H1": 0, "H2": 0}, "expect": {"domains": ["Funzioni esecutive"]}}, {"id": 7, "name": "Iperattivo netto", "scores": {"D1": 0, "D2": 1, "D3": 0, "D4": 0, "D5": 1, "D6": 0, "E1": 3, "E2": 3, "E3": 2, "E4": 2, "F1": 0, "F2": 1, "F3": 1, "F4": 0, "F5": 0, "F6": 1, "F7": 0, "F8": 1, "G1": 1, "G3": 0}, "impairment": {"C1": 1, "C2": 2, "C3": 2}, "history": "Presente", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": ["Iperattività/irrequietezza"]}}, {"id": 8, "name": "Iperattivo selettivo 2/4", "scores": {"D1": 0, "D2": 0, "D3": 1, "D4": 0, "D5": 0, "D6": 0, "E1": 3, "E2": 3, "E3": 0, "E4": 0, "F1": 0, "F2": 1, "F3": 0, "F4": 0, "F5": 0, "F6": 1, "F7": 0, "F8": 0, "G1": 0, "G3": 0}, "impairment": {"C1": 1, "C2": 2, "C3": 1}, "history": "Presente", "emotion": {"H1": 0, "H2": 0}, "expect": {"domains": ["Iperattività/irrequietezza"]}}, {"id": 9, "name": "Impulsivo 2+2", "scores": {"D1": 0, "D2": 1, "D3": 0, "D4": 0, "D5": 0, "D6": 0, "E1": 0, "E2": 0, "E3": 0, "E4": 0, "F1": 0, "F2": 1, "F3": 0, "F4": 0, "F5": 0, "F6": 0, "F7": 1, "F8": 0, "G1": 2, "G3": 2}, "impairment": {"C1": 1, "C2": 2, "C3": 2}, "history": "Presente", "emotion": {"H1": 1, "H2": 0}, "expect": {"domains": ["Impulsività/autocontrollo"]}}, {"id": 10, "name": "Impulsivo asimmetrico 3+1", "scores": {"D1": 0, "D2": 0, "D3": 1, "D4": 0, "D5": 0, "D6": 0, "E1": 0, "E2": 0, "E3": 0, "E4": 0, "F1": 0, "F2": 0, "F3": 0, "F4": 1, "F5": 0, "F6": 0, "F7": 0, "F8": 0, "G1": 3, "G3": 1}, "impairment": {"C1": 1, "C2": 2, "C3": 1}, "history": "Presente", "emotion": {"H1": 0, "H2": 0}, "expect": {"domains": ["Impulsività/autocontrollo"]}}, {"id": 11, "name": "Impulsivo isolato 3+0", "scores": {"D1": 0, "D2": 0, "D3": 0, "D4": 0, "D5": 1, "D6": 0, "E1": 0, "E2": 0, "E3": 0, "E4": 0, "F1": 0, "F2": 0, "F3": 1, "F4": 0, "F5": 0, "F6": 0, "F7": 0, "F8": 0, "G1": 3, "G3": 0}, "impairment": {"C1": 0, "C2": 1, "C3": 0}, "history": "Incerta", "emotion": {"H1": 0, "H2": 0}, "expect": {"domains": []}}, {"id": 12, "name": "Multidominio", "scores": {"D1": 3, "D2": 3, "D3": 2, "D4": 2, "D5": 2, "D6": 2, "E1": 3, "E2": 2, "E3": 2, "E4": 2, "F1": 3, "F2": 3, "F3": 2, "F4": 2, "F5": 2, "F6": 2, "F7": 3, "F8": 2, "G1": 3, "G3": 2}, "impairment": {"C1": 3, "C2": 3, "C3": 3}, "history": "Presente", "emotion": {"H1": 2, "H2": 2}, "expect": {"domains": ["Attenzione", "Iperattività/irrequietezza", "Funzioni esecutive", "Impulsività/autocontrollo"], "emotion": "Significativa"}}, {"id": 13, "name": "Sintomi senza impairment", "scores": {"D1": 3, "D2": 2, "D3": 2, "D4": 2, "D5": 1, "D6": 2, "E1": 0, "E2": 0, "E3": 1, "E4": 0, "F1": 3, "F2": 3, "F3": 2, "F4": 2, "F5": 2, "F6": 2, "F7": 2, "F8": 2, "G1": 0, "G3": 1}, "impairment": {"C1": 0, "C2": 0, "C3": 1}, "history": "Presente", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": ["Attenzione", "Funzioni esecutive"], "flag": "symptomsWithoutImpairment"}}, {"id": 14, "name": "Sintomi con storia assente", "scores": {"D1": 3, "D2": 2, "D3": 2, "D4": 2, "D5": 2, "D6": 1, "E1": 0, "E2": 1, "E3": 0, "E4": 0, "F1": 3, "F2": 3, "F3": 2, "F4": 2, "F5": 2, "F6": 2, "F7": 2, "F8": 2, "G1": 1, "G3": 0}, "impairment": {"C1": 2, "C2": 3, "C3": 2}, "history": "Assente", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": ["Attenzione", "Funzioni esecutive"], "flag": "significantWithAbsentHistory"}}, {"id": 15, "name": "Sintomi con storia incerta", "scores": {"D1": 3, "D2": 2, "D3": 2, "D4": 1, "D5": 2, "D6": 2, "E1": 0, "E2": 0, "E3": 1, "E4": 0, "F1": 3, "F2": 3, "F3": 2, "F4": 2, "F5": 2, "F6": 2, "F7": 2, "F8": 2, "G1": 1, "G3": 0}, "impairment": {"C1": 2, "C2": 2, "C3": 2}, "history": "Incerta", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": ["Attenzione", "Funzioni esecutive"], "flag": "significantWithUncertainHistory"}}, {"id": 16, "name": "Emotività isolata", "scores": {"D1": 1, "D2": 0, "D3": 1, "D4": 0, "D5": 1, "D6": 0, "E1": 0, "E2": 1, "E3": 0, "E4": 0, "F1": 1, "F2": 1, "F3": 0, "F4": 1, "F5": 1, "F6": 0, "F7": 1, "F8": 1, "G1": 0, "G3": 1}, "impairment": {"C1": 1, "C2": 1, "C3": 1}, "history": "Incerta", "emotion": {"H1": 2, "H2": 3}, "expect": {"domains": [], "emotion": "Significativa"}}, {"id": 17, "name": "Compensazione elevata", "scores": {"D1": 3, "D2": 2, "D3": 2, "D4": 2, "D5": 2, "D6": 1, "E1": 0, "E2": 0, "E3": 1, "E4": 0, "F1": 3, "F2": 3, "F3": 2, "F4": 3, "F5": 2, "F6": 2, "F7": 3, "F8": 2, "G1": 1, "G3": 1}, "impairment": {"C1": 1, "C2": 1, "C3": 2}, "history": "Presente", "emotion": {"H1": 1, "H2": 1}, "expect": {"domains": ["Attenzione", "Funzioni esecutive"]}}, {"id": 18, "name": "Dati incompleti / NV", "scores": {"D1": 2, "D2": "NV", "D3": 3, "D4": "NV", "D5": 2, "D6": "NV", "E1": 2, "E2": "NV", "E3": 2, "E4": "NV", "F1": 2, "F2": 3, "F3": "NV", "F4": 2, "F5": "NV", "F6": 2, "F7": "NV", "F8": 2, "G1": 3, "G3": "NV"}, "impairment": {"C1": "NV", "C2": 2, "C3": "NV"}, "history": "Incerta", "emotion": {"H1": 2, "H2": "NV"}, "expect": {"domains": [], "incomplete": true}}];
+function evaluateSyntheticCase(tc){
+ const dm={"Attenzione":["D1","D2","D3","D4","D5","D6"],"Iperattività/irrequietezza":["E1","E2","E3","E4"],"Funzioni esecutive":["F1","F2","F3","F4","F5","F6","F7","F8"],"Impulsività/autocontrollo":["G1","G3"]};
+ const minv={"Attenzione":4,"Iperattività/irrequietezza":3,"Funzioni esecutive":6,"Impulsività/autocontrollo":2},minh={"Attenzione":3,"Iperattività/irrequietezza":2,"Funzioni esecutive":4,"Impulsività/autocontrollo":2};
+ function stats(d){const v=dm[d].map(c=>tc.scores[c]).filter(x=>typeof x==="number");return{valid:v.length,high:v.filter(x=>x>=2).length,mean:v.length?v.reduce((a,b)=>a+b,0)/v.length:null}}
+ function significant(d){const s=stats(d);if(s.valid<minv[d])return false;if(d==="Impulsività/autocontrollo"){const a=tc.scores.G1,b=tc.scores.G3;return s.mean>=2||((a===3&&typeof b==="number"&&b>=1)||(b===3&&typeof a==="number"&&a>=1))}return s.mean>=2||s.high>=minh[d]}
+ const domains=Object.keys(dm).filter(significant),iv=["C1","C2","C3"].map(c=>tc.impairment[c]).filter(x=>typeof x==="number"),impSig=["C1","C2","C3"].some(c=>typeof tc.impairment[c]==="number"&&tc.impairment[c]>=2),hv=[tc.emotion.H1,tc.emotion.H2].filter(x=>typeof x==="number"),hm=hv.length?hv.reduce((a,b)=>a+b,0)/hv.length:null;
+ return{significantDomains:domains,emotionLevel:hm==null?"Non valutabile":hm>=2?"Significativa":hm>=1?"Presente":"Non significativa",flags:{symptomsWithoutImpairment:domains.length>0&&iv.length>=2&&!impSig,significantWithAbsentHistory:domains.length>0&&tc.history==="Assente",significantWithUncertainHistory:domains.length>0&&tc.history==="Incerta"},stats};
+}
+function runClinicalTests(){
+ const same=(a,b)=>{a=[...a].sort();b=[...b].sort();return a.length===b.length&&a.every((x,i)=>x===b[i])};
+ const results=CLINICAL_TESTS.map(tc=>{const got=evaluateSyntheticCase(tc),err=[];if(!same(got.significantDomains,tc.expect.domains||[]))err.push(`Domini attesi: ${(tc.expect.domains||[]).join(", ")||"nessuno"}; ottenuti: ${got.significantDomains.join(", ")||"nessuno"}`);if(tc.expect.emotion&&got.emotionLevel!==tc.expect.emotion)err.push(`Emotività attesa: ${tc.expect.emotion}; ottenuta: ${got.emotionLevel}`);if(tc.expect.flag&&!got.flags[tc.expect.flag])err.push(`Flag atteso non attivato: ${tc.expect.flag}`);if(tc.expect.incomplete&&!Object.keys(DM).some(d=>got.stats(d).valid<MINV[d]))err.push("Profilo incompleto non rilevato");return{id:tc.id,name:tc.name,pass:!err.length,errors:err}});
+ const ok=results.filter(r=>r.pass).length,el=document.getElementById("algoTestResults");el.innerHTML=`<div class="notice ${ok===results.length?"pass":"fail"}"><strong>${ok}/${results.length} test superati</strong></div>`+results.map(r=>`<div class="notice ${r.pass?"pass":"fail"}"><div class="test-row"><div class="test-status">${r.pass?"PASS":"FAIL"} #${r.id}</div><div><strong>${esc(r.name)}</strong>${r.errors.length?`<br>${r.errors.map(esc).join("<br>")}`:""}</div><div>${r.pass?"✓":"✕"}</div></div></div>`).join("");document.getElementById("algoTestCard").style.display="block";
+}
+
+
+function loadOperatorFeedback(){
+  const f=state.__operatorFeedback||{};
+  document.getElementById("feedbackDuration").textContent=formatDuration(elapsedMs());
+  document.getElementById("feedbackSummary").value=f.summaryFit||"";
+  document.getElementById("feedbackCompleteness").value=f.completeness||"";
+  document.getElementById("feedbackFlow").value=f.flow||"";
+  document.getElementById("feedbackUnclear").value=f.unclear||"";
+  document.getElementById("feedbackMissing").value=f.missing||"";
+  document.getElementById("feedbackNotes").value=f.notes||"";
+}
+function saveOperatorFeedback(){
+  state.__operatorFeedback={
+    summaryFit:document.getElementById("feedbackSummary").value,
+    completeness:document.getElementById("feedbackCompleteness").value,
+    flow:document.getElementById("feedbackFlow").value,
+    unclear:document.getElementById("feedbackUnclear").value,
+    missing:document.getElementById("feedbackMissing").value,
+    notes:document.getElementById("feedbackNotes").value,
+    durationMs:elapsedMs()
+  };
+  save();
+}
+function renderSummary(){
+ renderAnnotations();
+ const P=document.getElementById("profile");P.innerHTML="";Object.keys(DM).forEach(d=>{const s=dstat(d),v=s.mean==null?"—":s.mean.toFixed(1);P.innerHTML+=`<div class="domain"><div><strong>${d}</strong><div class="bar"><span style="width:${s.mean==null?0:s.mean/3*100}%"></span></div></div><div><strong>${v}</strong></div></div>`});
+ const F=document.getElementById("functioning");F.innerHTML="";[["C1","Studio"],["C2","Lavoro"],["C3","Vita quotidiana/relazioni"]].forEach(([c,l])=>{const v=E(c).value,w=typeof v==="number"?v/3*100:0;F.innerHTML+=`<div class="domain"><div><strong>${l}</strong><div class="bar"><span style="width:${w}%"></span></div></div><div><strong>${typeof v==="number"?v+"/3":v||"—"}</strong></div></div>`});
+ const b=E("B7").value||"";
+ const bLabels={B1:"Attenzione/concentrazione",B2:"Dimenticanze/perdita di oggetti",B3:"Autonomia nei compiti",B4:"Iperattività/irrequietezza",B5:"Impulsività"};
+ const evo=[];
+ ["B1","B2","B3","B4","B5"].forEach(c=>{
+   if(E(c).value==="Sì"){
+     const note=(E(c).note||"").trim();
+     evo.push(`<div class="notice"><strong>${bLabels[c]}</strong>${note?`<br>${note}`:""}</div>`);
+   }
+ });
+ document.getElementById("development").innerHTML=
+   `<div class="steps">${["Assente","Incerta","Presente"].map(x=>`<div class="step ${b===x?"active":""}">${x}</div>`).join("")}</div>`+
+   `<div class="notice"><strong>Fonti esterne:</strong> ${(E("B6").value||"non indicate")}</div>`+
+   (evo.length?`<div style="margin-top:10px"><strong>Elementi evolutivi riferiti</strong>${evo.join("")}</div>`:"");
+ const es=estat();let el=es.valid?(es.mean>=2?"Significativa":es.mean>=1?"Presente":"Non significativa"):"";document.getElementById("emotion").innerHTML=`<div class="steps">${["Non significativa","Presente","Significativa"].map(x=>`<div class="step ${el===x?"active":""}">${x}</div>`).join("")}</div>${!es.valid?'<div class="notice warn">Area non sufficientemente valutata.</div>':""}`;
+ const c=completeness();document.getElementById("complete").innerHTML=`<div class="notice"><strong>Completezza complessiva: ${c.pct}%</strong></div><div class="notice">Domande essenziali completate: ${c.done}/${c.total}.</div>${c.missing.length?`<div class="notice warn">Da integrare: ${c.missing.join(", ")}.</div>`:'<div class="notice">Tutte le aree essenziali risultano sufficientemente compilate.</div>'}`;
+ const hi=[];
+ ITEMS.filter(i=>i.t==="score"||i.t==="imp").forEach(i=>{
+   const v=E(i.c).value;
+   if(typeof v==="number"&&v>=2){
+     const note=(E(i.c).note||"").trim();
+     hi.push(`<div class="notice"><strong>${i.c} · ${v}/3</strong><br>${i.q}${note?`<br><em>Esempio:</em> ${note}`:""}</div>`);
+   }
+ });
+ document.getElementById("high").innerHTML=hi.length?hi.join(""):'<div class="notice">Nessun item con punteggio ≥2.</div>';
+ document.getElementById("autoSummary").value=narrative();
+ let concl=state.__conclusions||"";const s=(state.__scratch||"").trim();if(s&&!concl.trim())concl=s;document.getElementById("conclusions").value=concl;state.__conclusions=concl;save()
+}
+function showSummary(){if(!state.__finishedAt){state.__finishedAt=Date.now();save();}state.__status="completed";persistNow("completed");updateElapsed();document.getElementById("interview").style.display="none";document.getElementById("summary").classList.add("show");renderSummary()}
+
+["feedbackSummary","feedbackCompleteness","feedbackFlow","feedbackUnclear","feedbackMissing","feedbackNotes"].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){
+    el.addEventListener(el.tagName==="SELECT"?"change":"input",saveOperatorFeedback);
+  }
+});
+
+document.getElementById("edit").onclick=render;
+document.getElementById("testAlgo").onclick=runClinicalTests;
+document.getElementById("reportBtn").onclick=showReport;
+document.getElementById("backReport").onclick=()=>{document.getElementById("reportView").classList.remove("show");document.getElementById("summary").classList.add("show");renderSummary();};
+document.getElementById("printReport").onclick=()=>{renderReport();setTimeout(()=>window.print(),120)};
+document.getElementById("exportReport").onclick=exportReportDocument;
+document.getElementById("conclusions").oninput=e=>{state.__conclusions=e.target.value;save()};
+document.getElementById("save").onclick=async()=>{await persistNow();alert("Sessione salvata nel database centrale.")};
+document.getElementById("export").onclick=()=>{const payload={exported_at:new Date().toISOString(),answers:state,summary:narrative(),operator_feedback:state.__operatorFeedback||{},duration_ms:elapsedMs(),domains:{}};Object.keys(DM).forEach(d=>payload.domains[d]={...dstat(d),significant:dsig(d)});const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="intervista_adhd_v14.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+document.getElementById("import").onclick=()=>document.getElementById("file").click();document.getElementById("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);state=d.answers||d;idx=Number(state.__idx||0);scratch.value=state.__scratch||"";save();alert("Salvataggio caricato.");render()}catch(err){alert("File non valido.")}};r.readAsText(f);e.target.value=""};
+document.getElementById("reset").onclick=async()=>{if(confirm("Iniziare un nuovo colloquio?")){state={};idx=0;localStorage.removeItem("adhd_central_id");localStorage.removeItem("adhd_central_backup");await centralCreate();scratch.value="";render()}};
+async function bootstrap(){const id=localStorage.getItem("adhd_central_id");if(!(id&&await centralLoad(id)))await centralCreate();scratch.value=state.__scratch||"";centralStatus("connesso");render()}
+bootstrap();
+setInterval(()=>{if(!state.__finishedAt)updateElapsed();},1000);
+</script>
+</body>
+</html>

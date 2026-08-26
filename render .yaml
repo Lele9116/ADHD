@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: adhd-central-pilot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: adhd-pilot-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: OPERATOR_PASSWORD
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+
+databases:
+  - name: adhd-pilot-db
+    plan: free
+    databaseName: adhd_pilot
+    user: adhd_pilot
+    ipAllowList: []
