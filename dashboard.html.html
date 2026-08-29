@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard ADHD Pilot</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:#f6f7f9;color:#17202a;margin:0}
+.w{max-width:1100px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}.c,table{background:#fff;border:1px solid #ddd}.c{padding:16px;border-radius:12px}.n{font-size:28px;font-weight:800}
+table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:13px}th{background:#fafafa}
+.b{display:inline-block;background:#2563eb;color:white;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:700;border:0}
+.open{color:#2563eb;text-decoration:none;font-weight:700}.status-completed{font-weight:700}.muted{color:#6b7280}
+@media(max-width:700px){.cards{grid-template-columns:1fr 1fr}.tablewrap{overflow:auto}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head><body><div class="w">
+<div class="top"><div><h1>Dashboard pilota ADHD</h1><div class="muted">Raccolta centralizzata</div></div>
+<div><a class="b" href="/api/export.csv">Esporta CSV</a> <form method="post" action="/logout" style="display:inline"><button class="b" type="submit">Esci</button></form></div></div>
+<div class="cards"><div class="c">Colloqui<div class="n" id="t">—</div></div><div class="c">Completati<div class="n" id="d">—</div></div><div class="c">Durata media<div class="n" id="m">—</div></div><div class="c">Sintesi aderente<div class="n" id="f">—</div></div></div>
+<div class="tablewrap"><table><thead><tr><th>Data</th><th>ID paziente</th><th>Intervistatore</th><th>Stato</th><th>Durata</th><th>Sintesi</th><th>Fluidità</th><th></th></tr></thead><tbody id="r"></tbody></table></div>
+</div>
+<script>
+const fm=x=>{if(!x)return"—";const m=Math.round(x/60000);return m+" min"};
+async function L(){
+ let [a,b]=await Promise.all([fetch("/api/stats"),fetch("/api/interviews")]);
+ let s=await a.json(),l=await b.json();
+ t.textContent=s.total; d.textContent=s.completed; m.textContent=fm(s.avg_duration_ms);
+ let n=Object.values(s.summary_fit||{}).reduce((x,y)=>x+y,0),y=(s.summary_fit||{})["Sì"]||0;
+ f.textContent=n?Math.round(y/n*100)+"%":"—";
+ r.innerHTML=l.map(x=>`<tr>
+ <td>${new Date(x.created_at).toLocaleString("it-IT")}</td>
+ <td>${x.patient_id||"—"}</td><td>${x.interviewer||"—"}</td>
+ <td>${x.status}</td><td>${fm(x.duration_ms)}</td><td>${x.feedback_summary_fit||"—"}</td><td>${x.feedback_flow||"—"}</td>
+ <td><a class="open" href="/dashboard/interview/${encodeURIComponent(x.id)}">Apri →</a></td></tr>`).join("");
+}
+L();setInterval(L,15000)
+</script></body></html>

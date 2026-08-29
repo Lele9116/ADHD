@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dettaglio colloquio ADHD</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:#f6f7f9;color:#17202a;margin:0}
+.w{max-width:950px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:18px}
+.card{background:#fff;border:1px solid #e1e4e8;border-radius:14px;padding:18px;margin-bottom:14px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:18px 0 8px}.muted{color:#6b7280}
+.meta{display:grid;grid-template-columns:180px 1fr;gap:7px 12px}.meta .k{color:#6b7280}.item{padding:11px 0;border-bottom:1px solid #eee}.item:last-child{border-bottom:0}
+.code{font-weight:800}.q{margin:3px 0 5px}.value{font-weight:650}.note{margin-top:5px;padding:8px 10px;background:#f7f8fa;border-radius:8px}
+.text{white-space:pre-wrap;line-height:1.5}.b{display:inline-block;background:#2563eb;color:white;padding:9px 13px;border-radius:8px;text-decoration:none;font-weight:700}
+.secondary{background:#fff;color:#2563eb;border:1px solid #cdd9ef}.feedback{display:grid;grid-template-columns:180px 1fr;gap:7px 12px}
+@media(max-width:650px){.meta,.feedback{grid-template-columns:1fr}.top{flex-direction:column}}
+@media print{body{background:#fff}.top .actions{display:none}.card{border:0;padding:0;margin:0 0 20px}}
+</style></head><body><div class="w">
+<div class="top"><div><h1>Colloquio ADHD</h1><div class="muted">{{ interview.patient_id or "ID non indicato" }}</div></div>
+<div class="actions"><a class="b secondary" href="/dashboard">← Dashboard</a> <a class="b" href="/api/interviews/{{ interview.id }}/export.pdf">Esporta PDF</a> <a class="b secondary" href="/api/interviews/{{ interview.id }}/export.json">JSON</a></div></div>
+
+<div class="card"><h2>Dati della sessione</h2><div class="meta">
+<div class="k">Stato</div><div>{{ interview.status }}</div>
+<div class="k">Creato</div><div>{{ interview.created_at }}</div>
+<div class="k">Ultimo salvataggio</div><div>{{ interview.updated_at }}</div>
+<div class="k">ID paziente</div><div>{{ interview.patient_id or "—" }}</div>
+<div class="k">Intervistatore</div><div>{{ interview.interviewer or "—" }}</div>
+<div class="k">Professionista inviante</div><div>{{ interview.referrer or "—" }}</div>
+<div class="k">Data colloquio</div><div>{{ interview.visit_date or "—" }}</div>
+<div class="k">Durata registrata</div><div>{{ ((interview.duration_ms or 0) / 60000)|round|int }} min</div>
+</div></div>
+
+{% if interview.summary_text %}
+<div class="card"><h2>Sintesi clinica automatica</h2><div class="text">{{ interview.summary_text }}</div></div>
+{% endif %}
+{% if interview.conclusions %}
+<div class="card"><h2>Conclusioni dell’intervistatore</h2><div class="text">{{ interview.conclusions }}</div></div>
+{% endif %}
+
+<div class="card"><h2>Feedback dell’operatore</h2><div class="feedback">
+<div class="muted">Aderenza sintesi</div><div>{{ interview.feedback_summary_fit or "—" }}</div>
+<div class="muted">Completezza</div><div>{{ interview.feedback_completeness or "—" }}</div>
+<div class="muted">Fluidità</div><div>{{ interview.feedback_flow or "—" }}</div>
+<div class="muted">Domande problematiche</div><div class="text">{{ interview.feedback_unclear or "—" }}</div>
+<div class="muted">Informazioni mancanti</div><div class="text">{{ interview.feedback_missing or "—" }}</div>
+<div class="muted">Note</div><div class="text">{{ interview.feedback_notes or "—" }}</div>
+</div></div>
+
+<div class="card"><h2>Risposte e annotazioni raccolte</h2>
+{% if grouped %}
+  {% for section, rows in grouped.items() %}
+    <h3>{{ section }}</h3>
+    {% for row in rows %}
+      <div class="item">
+        <div class="code">{{ row.code }}</div>
+        <div class="q">{{ row.question }}</div>
+        <div class="value">Risposta: {{ row.value }}</div>
+        {% if row.note %}<div class="note"><strong>Annotazione/esempio:</strong> {{ row.note }}</div>{% endif %}
+      </div>
+    {% endfor %}
+  {% endfor %}
+{% else %}
+<div class="muted">Nessuna risposta registrata.</div>
+{% endif %}
+</div>
+</div></body></html>

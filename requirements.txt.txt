@@ -1,0 +1,5 @@
+Flask>=3.0,<4
+SQLAlchemy>=2.0,<3
+psycopg2-binary>=2.9,<3
+gunicorn>=22,<24
+reportlab>=4.2,<5
